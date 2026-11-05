@@ -8,22 +8,22 @@ namespace FITClothing.API.Controllers;
 [Route("api/[controller]")]
 public class HeroSlidesController : ControllerBase
 {
-	private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-	public HeroSlidesController(
-		ApplicationDbContext context)
-	{
-		_context = context;
-	}
+    public HeroSlidesController(
+        ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
-	[HttpGet]
-	public async Task<IActionResult> Get()
-	{
-		var slides = await _context.HeroSlides
-			.Where(x => x.IsActive)
-			.OrderBy(x => x.DisplayOrder)
-			.ToListAsync();
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var slides = await _context.HeroSlides
+            .Where(x => x.IsActive)
+            .OrderBy(x => x.DisplayOrder)
+            .ToListAsync();
 
-		return Ok(slides);
-	}
+        return Ok(slides);
+    }
 }
