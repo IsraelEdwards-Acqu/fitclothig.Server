@@ -10,8 +10,7 @@ public class HeroSlidesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public HeroSlidesController(
-        ApplicationDbContext context)
+    public HeroSlidesController(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -32,9 +31,8 @@ public class HeroSlidesController : ControllerBase
         {
             return StatusCode(500, new
             {
-                Message = ex.Message,
-                InnerException = ex.InnerException?.Message,
-                StackTrace = ex.StackTrace
+                Error = ex.Message,
+                Inner = ex.InnerException?.Message
             });
         }
     }
