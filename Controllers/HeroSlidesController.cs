@@ -15,25 +15,25 @@ public class HeroSlidesController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+   [HttpGet]
+public async Task<IActionResult> Get()
+{
+    try
     {
-        try
-        {
-            var slides = await _context.HeroSlides
-                .Where(x => x.IsActive)
-                .OrderBy(x => x.DisplayOrder)
-                .ToListAsync();
+        var slides = await _context.HeroSlides
+            .Where(x => x.IsActive)
+            .OrderBy(x => x.DisplayOrder)
+            .ToListAsync();
 
-            return Ok(slides);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new
-            {
-                Error = ex.Message,
-                Inner = ex.InnerException?.Message
-            });
-        }
+        return Ok(slides);
     }
+    catch (Exception ex)
+    {
+        return Ok(new
+        {
+            Error = ex.Message,
+            InnerError = ex.InnerException?.Message
+        });
+    }
+}
 }
