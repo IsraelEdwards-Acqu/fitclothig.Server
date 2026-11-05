@@ -19,11 +19,23 @@ public class HeroSlidesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var slides = await _context.HeroSlides
-            .Where(x => x.IsActive)
-            .OrderBy(x => x.DisplayOrder)
-            .ToListAsync();
+        try
+        {
+            var slides = await _context.HeroSlides
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.DisplayOrder)
+                .ToListAsync();
 
-        return Ok(slides);
+            return Ok(slides);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                Message = ex.Message,
+                InnerException = ex.InnerException?.Message,
+                StackTrace = ex.StackTrace
+            });
+        }
     }
 }
