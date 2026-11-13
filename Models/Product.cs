@@ -19,9 +19,19 @@ public class Product
     public bool IsFeatured { get; set; }
 
     public bool IsActive { get; set; } = true;
+    public bool IsTrending { get; set; }
+    public bool IsBestSeller { get; set; }
 
+    public bool HasNoMinimum { get; set; }
+
+    public decimal Rating { get; set; }
+
+    public int ReviewCount { get; set; }
     public Guid CategoryId { get; set; }
+    public bool IsNewArrival { get; set; }
 
+    public DateTime DateAdded { get; set; }
+        = DateTime.UtcNow;
     public Guid BrandId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public Category? Category { get; set; }
@@ -39,7 +49,6 @@ public class Product
 
     public bool HasBackDesign { get; set; } = true;
     public Brand? Brand { get; set; }
-
     public ICollection<ProductImage> Images { get; set; }
     = new List<ProductImage>();
 

@@ -10,7 +10,9 @@ public class SaveDesignRequest
 {
     public Guid ProductId { get; set; }
 
-    public string DesignName { get; set; } = string.Empty;
+    public string Name { get; set; } = "";
 
-    public string DesignJson { get; set; } = string.Empty;
+    public string DesignJson { get; set; } = "";
+
+    public string PreviewImageUrl { get; set; } = "";
 }

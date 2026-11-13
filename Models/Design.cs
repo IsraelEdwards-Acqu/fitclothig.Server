@@ -11,12 +11,17 @@ public class Design
 
     public Guid ProductId { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public Guid? CustomerId { get; set; }
 
-    public string DesignJson { get; set; } = string.Empty;
+    public string Name { get; set; } = "";
 
-    public string PreviewImageUrl { get; set; } = string.Empty;
+    public string DesignJson { get; set; } = "";
+
+    public string PreviewImageUrl { get; set; } = "";
+
+    public bool IsDraft { get; set; } = true;
 
     public DateTime CreatedAt { get; set; }
-        = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
 }

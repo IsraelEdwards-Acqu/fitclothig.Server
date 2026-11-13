@@ -9,4 +9,8 @@ public class ProductColor
     public string HexCode { get; set; } = string.Empty;
 
     public Guid ProductId { get; set; }
+
+   public string ColorName { get; set; } = "";
+   public string ImageUrl { get; set; } = "";
+
 }

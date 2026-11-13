@@ -12,12 +12,11 @@ public class Review
 
     public Guid ProductId { get; set; }
 
-    public Guid UserId { get; set; }
+    public string CustomerName { get; set; } = "";
+
+    public string Comment { get; set; } = "";
 
     public int Rating { get; set; }
-
-    public string Comment { get; set; }
-        = string.Empty;
 
     public DateTime CreatedAt { get; set; }
         = DateTime.UtcNow;
