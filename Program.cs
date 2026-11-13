@@ -21,17 +21,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddControllers();
 
 // CORS
-// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(
-        "FitClothingPolicy",
+    options.AddPolicy("FitClothingPolicy",
         policy =>
         {
             policy
-                .SetIsOriginAllowed(origin =>
-                    origin.Contains("vercel.app") ||
-                    origin.Contains("localhost"))
+                .WithOrigins(
+                    "https://fitclothing.vercel.app",
+                    "https://www.fitclothing.vercel.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -44,7 +42,7 @@ var app = builder.Build();
 
 app.UseCors("FitClothingPolicy");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapControllers();
 
