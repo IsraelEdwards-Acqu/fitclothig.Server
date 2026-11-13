@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddControllers();
 
 // CORS
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -28,10 +29,9 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins(
-                    "https://fitclothing.vercel.app",
-                    "http://localhost:44386",
-                    "https://localhost:44386")
+                .SetIsOriginAllowed(origin =>
+                    origin.Contains("vercel.app") ||
+                    origin.Contains("localhost"))
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -42,9 +42,9 @@ builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
 app.UseCors("FitClothingPolicy");
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
