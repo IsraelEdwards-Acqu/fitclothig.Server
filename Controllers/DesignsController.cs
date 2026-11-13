@@ -17,25 +17,28 @@ public class DesignsController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Save(
-        SaveDesignRequest request)
+     SaveDesignRequest request)
     {
         var design = new Design
         {
             Id = Guid.NewGuid(),
             ProductId = request.ProductId,
-            Name = request.DesignName,
-            DesignJson = request.DesignJson
+            Name = request.Name,
+            DesignJson = request.DesignJson,
+            PreviewImageUrl = request.PreviewImageUrl,
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.Designs.Add(design);
 
         await _context.SaveChangesAsync();
 
-        return Ok(new
-        {
-            design.Id,
-            design.Name
-        });
+        return Ok(
+            new DesignSaveResponse
+            {
+                Id = design.Id,
+                Name = design.Name
+            });
     }
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> Get(
@@ -63,14 +66,20 @@ public class DesignsController : ControllerBase
     Guid id,
     SaveDesignRequest request)
     {
-        var design = await _context.Designs
-            .FindAsync(id);
+        var design =
+            await _context.Designs
+                .FindAsync(id);
 
         if (design is null)
             return NotFound();
 
-        design.Name = request.DesignName;
+        design.Name = request.Name;
         design.DesignJson = request.DesignJson;
+        design.PreviewImageUrl =
+            request.PreviewImageUrl;
+
+        design.UpdatedAt =
+            DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 

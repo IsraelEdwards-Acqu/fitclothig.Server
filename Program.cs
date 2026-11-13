@@ -28,9 +28,12 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
+                .WithOrigins(
+                    "https://fitclothing.vercel.app",
+                    "http://localhost:44386",
+                    "https://localhost:44386")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
 

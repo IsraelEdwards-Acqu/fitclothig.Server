@@ -26,4 +26,19 @@ public class CategoriesController : ControllerBase
 
         return Ok(categories);
     }
+    [HttpGet("{slug}/sections")]
+    public async Task<IActionResult>
+    GetSections(string slug)
+    {
+        var sections = await _context
+            .CategorySections
+            .Where(x =>
+                x.CategorySlug == slug &&
+                x.IsActive)
+            .OrderBy(x => x.DisplayOrder)
+            .ToListAsync();
+
+        return Ok(sections);
+    }
+
 }

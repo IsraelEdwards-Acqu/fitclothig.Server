@@ -1,6 +1,5 @@
 ﻿using FITClothing.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-
 namespace FITClothing.API.Data;
 
 public class ApplicationDbContext : DbContext
@@ -22,12 +21,36 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductColor> ProductColors => Set<ProductColor>();
 
     public DbSet<ProductSize> ProductSizes => Set<ProductSize>();
-    public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<CartItem> CartItems => Set<CartItem>();
     public DbSet<ProductImage> ProductImages => Set<ProductImage>();
     public DbSet<HeroSlide> HeroSlides => Set<HeroSlide>();
     public DbSet<Review> Reviews => Set<Review>();
+    public DbSet<CategorySection>
+    CategorySections => Set<CategorySection>();
+    public DbSet<CategoryHeroBanner>
+    CategoryHeroBanners => Set<CategoryHeroBanner>();
+    public DbSet<Article> Articles => Set<Article>();
+    public DbSet<MenuItem>
+    MenuItems => Set<MenuItem>();
+    public DbSet<WishlistItem>
+    WishlistItems => Set<WishlistItem>();
+    public DbSet<Order> Orders
+    => Set<Order>();
+    public DbSet<OrderItem> OrderItems
+        => Set<OrderItem>();
+    public DbSet<OrderStatusHistory>
+    OrderStatusHistories
+    => Set<OrderStatusHistory>();
+    public ICollection<OrderStatusHistory>
+    StatusHistory
+    { get; set; }
+    = new List<OrderStatusHistory>();
+    public DbSet<QuoteRequest>
+    QuoteRequests => Set<QuoteRequest>();
+    public DbSet<QuoteStatusHistory>
+    QuoteStatusHistories
+    => Set<QuoteStatusHistory>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -41,6 +64,10 @@ public class ApplicationDbContext : DbContext
             .HasMany(b => b.Products)
             .WithOne(p => p.Brand)
             .HasForeignKey(p => p.BrandId);
+        modelBuilder.Entity<Order>()
+    .HasMany(x => x.Items)
+    .WithOne(x => x.Order)
+    .HasForeignKey(x => x.OrderId);
     }
 
 }

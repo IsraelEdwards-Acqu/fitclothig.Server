@@ -76,4 +76,94 @@ public class ProductsController : ControllerBase
 
         return Ok(products);
     }
+    [HttpGet("new-arrivals")]
+    public async Task<IActionResult> GetNewArrivals()
+    {
+        var products = await _context.Products
+            .Where(x => x.IsActive)
+            .Where(x => x.IsNewArrival)
+            .OrderByDescending(x => x.DateAdded)
+            .Take(12)
+            .ToListAsync();
+
+        return Ok(products);
+    }
+    [HttpGet("featured")]
+    public async Task<IActionResult>
+    GetFeaturedProducts()
+    {
+        var products =
+            await _context.Products
+                .Where(x => x.IsFeatured)
+                .OrderBy(x => x.Name)
+                .Take(8)
+                .ToListAsync();
+
+        return Ok(products);
+    }
+    [HttpGet("trending")]
+    public async Task<IActionResult> GetTrendingProducts()
+    {
+        var products = await _context.Products
+            .Where(x => x.IsTrending)
+            .OrderBy(x => x.Name)
+            .Take(12)
+            .ToListAsync();
+
+        return Ok(products);
+    }
+    [HttpGet("{slug}")]
+    public async Task<IActionResult>
+    GetBySlug(string slug)
+    {
+        var product =
+            await _context.Products
+                .FirstOrDefaultAsync(
+                    x => x.Slug == slug);
+
+        if (product is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(product);
+    }
+    [HttpGet("related/{categoryId}")]
+    public async Task<IActionResult>
+    GetRelatedProducts(
+        Guid categoryId)
+    {
+        var products =
+            await _context.Products
+                .Where(x =>
+                    x.CategoryId == categoryId &&
+                    x.IsActive)
+                .Take(8)
+                .ToListAsync();
+
+        return Ok(products);
+    }
+    [HttpGet("search")]
+    public async Task<IActionResult>
+    Search(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return Ok(new List<Product>());
+        }
+
+        var products =
+            await _context.Products
+                .Where(p =>
+                    p.IsActive &&
+                    (
+                        p.Name.Contains(query) ||
+                        p.Description.Contains(query) ||
+                        p.BrandName.Contains(query)
+                    ))
+                .Take(10)
+                .ToListAsync();
+
+        return Ok(products);
+    }
 }
