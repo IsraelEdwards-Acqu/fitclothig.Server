@@ -10,14 +10,15 @@ public class HeroSlidesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public HeroSlidesController(
-        ApplicationDbContext context)
+    public HeroSlidesController(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+   [HttpGet]
+public async Task<IActionResult> Get()
+{
+    try
     {
         try
         {
@@ -38,4 +39,13 @@ public class HeroSlidesController : ControllerBase
             });
         }
     }
+    catch (Exception ex)
+    {
+        return Ok(new
+        {
+            Error = ex.Message,
+            InnerError = ex.InnerException?.Message
+        });
+    }
+}
 }
