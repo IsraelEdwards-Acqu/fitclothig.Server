@@ -20,13 +20,15 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("FitClothingPolicy",
+    options.AddPolicy(
+        "FitClothingPolicy",
         policy =>
         {
             policy
                 .WithOrigins(
                     "https://fitclothing.vercel.app",
-                    "https://www.fitclothing.vercel.app")
+                    "http://localhost:44386",
+                    "https://localhost:44386")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -40,7 +42,7 @@ app.UseCors("FitClothingPolicy");
 
 app.UseRouting();
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
