@@ -59,7 +59,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.AppUser", b =>
@@ -96,7 +96,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Brand", b =>
@@ -125,7 +125,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Cart", b =>
@@ -139,7 +139,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Category", b =>
@@ -169,7 +169,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Design", b =>
@@ -198,7 +198,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Designs");
+                    b.ToTable("Designs", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.HeroSlide", b =>
@@ -235,7 +235,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HeroSlides");
+                    b.ToTable("HeroSlides", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Product", b =>
@@ -312,7 +312,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.ProductColor", b =>
@@ -336,7 +336,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductColors");
+                    b.ToTable("ProductColors", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.ProductImage", b =>
@@ -359,7 +359,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.ProductSize", b =>
@@ -379,7 +379,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductSizes");
+                    b.ToTable("ProductSizes", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Promotion", b =>
@@ -416,7 +416,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Promotions");
+                    b.ToTable("Promotions", (string)null);
                 });
 
             modelBuilder.Entity("FITClothing.Shared.Models.Review", b =>
@@ -443,7 +443,7 @@ namespace FITClothing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("CartItem", b =>

@@ -42,10 +42,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<OrderStatusHistory>
     OrderStatusHistories
     => Set<OrderStatusHistory>();
-    public ICollection<OrderStatusHistory>
-    StatusHistory
-    { get; set; }
-    = new List<OrderStatusHistory>();
     public DbSet<QuoteRequest>
     QuoteRequests => Set<QuoteRequest>();
     public DbSet<QuoteStatusHistory>

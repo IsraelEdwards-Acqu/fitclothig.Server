@@ -10,17 +10,14 @@ var connectionString =
     ?? builder.Configuration.GetConnectionString(
         "DefaultConnection");
 
-// Database
 builder.Services.AddDbContext<ApplicationDbContext>(
     options =>
     {
         options.UseNpgsql(connectionString);
     });
 
-// Controllers
 builder.Services.AddControllers();
 
-// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -37,14 +34,15 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Services
 builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
 app.UseCors("FitClothingPolicy");
+
+app.UseRouting();
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
