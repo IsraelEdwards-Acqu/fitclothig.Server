@@ -1,5 +1,6 @@
 ﻿using FITClothing.API.Data;
 using FITClothing.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,6 +49,7 @@ public class QuoteRequestsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(
@@ -55,7 +57,21 @@ public class QuoteRequestsController : ControllerBase
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync());
     }
+
+    [HttpGet("{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var quote = await _context.QuoteRequests
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return quote is null
+            ? NotFound()
+            : Ok(quote);
+    }
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(
     Guid id,
     QuoteRequest request)
@@ -77,4 +93,5 @@ public class QuoteRequestsController : ControllerBase
 
         return Ok(quote);
     }
+
 }

@@ -1,15 +1,11 @@
 ﻿using FITClothing.API.Data;
 using FITClothing.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FITClothing.API.Controllers;
-public class UpdateOrderStatusRequest
-{
-    public string Status { get; set; } = "";
-
-    public string Notes { get; set; } = "";
-}
 [ApiController]
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
@@ -23,15 +19,54 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetOrders()
     {
-        var orders =
-            await _context.Orders
-                .OrderByDescending(
-                    x => x.CreatedAt)
-                .ToListAsync();
+        var ordersQuery = _context.Orders
+            .OrderByDescending(x => x.CreatedAt)
+            .AsQueryable();
+
+        if (!User.IsInRole("Admin"))
+        {
+            ordersQuery = ordersQuery.Where(
+                x => x.CustomerId == GetUserId());
+        }
+
+        var orders = await ordersQuery.ToListAsync();
 
         return Ok(orders);
+    }
+
+    [HttpGet("{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetOrder(Guid id)
+    {
+        var isAdmin = User.IsInRole("Admin");
+        var userId = isAdmin ? Guid.Empty : GetUserId();
+
+        var order = await _context.Orders
+            .AsNoTracking()
+            .Include(x => x.Items)
+            .FirstOrDefaultAsync(x =>
+                x.Id == id
+                && (isAdmin || x.CustomerId == userId));
+
+        return order is null
+            ? NotFound()
+            : Ok(order);
+    }
+
+    [HttpGet("track/{orderNumber}")]
+    public async Task<IActionResult> Track(string orderNumber)
+    {
+        var order = await _context.Orders
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                x => x.OrderNumber == orderNumber);
+
+        return order is null
+            ? NotFound()
+            : Ok(order);
     }
 
     [HttpPost]
@@ -39,6 +74,11 @@ public class OrdersController : ControllerBase
      Order order)
     {
         order.Id = Guid.NewGuid();
+
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            order.CustomerId = GetUserId();
+        }
 
         order.CreatedAt =
             DateTime.UtcNow;
@@ -109,6 +149,7 @@ public class OrdersController : ControllerBase
         return Ok(history);
     }
     [HttpPut("{id}/status")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateStatus(
     Guid id,
     UpdateOrderStatusRequest request)
@@ -136,5 +177,13 @@ public class OrdersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(order);
+    }
+
+    private Guid GetUserId()
+    {
+        var value = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        return Guid.Parse(value!);
     }
 }

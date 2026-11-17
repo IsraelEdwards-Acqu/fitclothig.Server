@@ -1,5 +1,6 @@
 ﻿using FITClothing.API.Data;
 using FITClothing.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ public class WishlistController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         return Ok(
@@ -27,6 +29,7 @@ public class WishlistController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Add(
         WishlistItem item)
     {
@@ -41,6 +44,7 @@ public class WishlistController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(
         Guid id)
     {
@@ -58,4 +62,5 @@ public class WishlistController : ControllerBase
 
         return Ok();
     }
+
 }

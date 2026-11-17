@@ -34,6 +34,7 @@ public class ProductsController : ControllerBase
         var product = await _context.Products
             .Include(x => x.Category)
             .Include(x => x.Brand)
+                .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Slug == slug);
 
         if (product == null)
@@ -48,7 +49,11 @@ public class ProductsController : ControllerBase
         var products = await _context.Products
             .Include(x => x.Category)
             .Include(x => x.Brand)
+                .AsNoTracking()
             .Where(x => x.Category!.Slug == slug)
+                .Where(x => x.IsActive)
+                .OrderByDescending(x => x.IsFeatured)
+                .ThenByDescending(x => x.DateAdded)
             .ToListAsync();
 
         return Ok(products);
@@ -88,19 +93,6 @@ public class ProductsController : ControllerBase
 
         return Ok(products);
     }
-    [HttpGet("featured")]
-    public async Task<IActionResult>
-    GetFeaturedProducts()
-    {
-        var products =
-            await _context.Products
-                .Where(x => x.IsFeatured)
-                .OrderBy(x => x.Name)
-                .Take(8)
-                .ToListAsync();
-
-        return Ok(products);
-    }
     [HttpGet("trending")]
     public async Task<IActionResult> GetTrendingProducts()
     {
@@ -111,22 +103,6 @@ public class ProductsController : ControllerBase
             .ToListAsync();
 
         return Ok(products);
-    }
-    [HttpGet("{slug}")]
-    public async Task<IActionResult>
-    GetBySlug(string slug)
-    {
-        var product =
-            await _context.Products
-                .FirstOrDefaultAsync(
-                    x => x.Slug == slug);
-
-        if (product is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(product);
     }
     [HttpGet("related/{categoryId}")]
     public async Task<IActionResult>

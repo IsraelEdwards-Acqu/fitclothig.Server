@@ -8,11 +8,17 @@ public class ApplicationDbContextFactory
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
+        var connectionString =
+            Environment.GetEnvironmentVariable(
+                "DATABASE_CONNECTION_STRING")
+            ?? throw new InvalidOperationException(
+                "DATABASE_CONNECTION_STRING must be configured for EF migrations.");
+
         var optionsBuilder =
             new DbContextOptionsBuilder<ApplicationDbContext>();
 
         optionsBuilder.UseNpgsql(
-            "Host=ep-delicate-bonus-b4cij8xt-pooler.c-6.us-east-2.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_6cYxvQGN8OIE;SSL Mode=Require;Trust Server Certificate=true");
+            connectionString);
 
         return new ApplicationDbContext(
             optionsBuilder.Options);
